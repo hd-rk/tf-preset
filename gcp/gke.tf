@@ -1,10 +1,10 @@
 locals {
   gke_preset_conf = local.preset_map[var.preset]["gke"]
-  gke_regional = var.gke_regional != null ? var.gke_regional : gke_preset_conf["regional"]
-  gke_max_pods_per_node = var.gke_max_pods_per_node != null ? var.gke_max_pods_per_node : gke_preset_conf["max_pods_per_node"]
-  gke_pod_secondary_range_name = var.gke_pod_secondary_range_name != null ? var.gke_pod_secondary_range_name : gke_preset_conf["pod_secondary_range_name"]
-  gke_svc_secondary_range_name = var.gke_svc_secondary_range_name != null ? var.gke_svc_secondary_range_name : gke_preset_conf["svc_secondary_range_name"]
-  gke_node_pools = var.gke_node_pools != null ? var.gke_node_pools : gke_preset_conf["node_pools"]
+  gke_regional = var.gke_regional != null ? var.gke_regional : local.gke_preset_conf["regional"]
+  gke_max_pods_per_node = var.gke_max_pods_per_node != null ? var.gke_max_pods_per_node : local.gke_preset_conf["max_pods_per_node"]
+  gke_pod_secondary_range_name = var.gke_pod_secondary_range_name != null ? var.gke_pod_secondary_range_name : local.gke_preset_conf["pod_secondary_range_name"]
+  gke_svc_secondary_range_name = var.gke_svc_secondary_range_name != null ? var.gke_svc_secondary_range_name : local.gke_preset_conf["svc_secondary_range_name"]
+  gke_node_pools = var.gke_node_pools != null ? var.gke_node_pools : local.gke_preset_conf["node_pools"]
 }
 
 module "gke" {
