@@ -10,7 +10,7 @@ variable "preset" {
   type = string
   validation {
     condition = contains(["development","staging"], var.preset)
-    message = "preset must be one of 'development', 'staging'"
+    error_message = "Preset must be one of 'development', 'staging'."
   }
 }
 
