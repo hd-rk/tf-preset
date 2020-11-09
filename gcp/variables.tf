@@ -6,29 +6,37 @@ variable "zone" {}
 variable "network" {}
 variable "subnet" {}
 
+variable "preset" {
+  type = string
+  validation {
+    condition = contains(["development","staging"], var.preset)
+    message = "preset must be one of 'development', 'staging'"
+  }
+}
+
 variable "enable_monitoring" {
   type = bool
-  default = false
+  default = null
 }
 
 variable "gke_regional" {
   type = bool
-  default = false
+  default = null
 }
 
 variable "gke_max_pods_per_node" {
   type = number
-  default = 110
+  default = null
 }
 
 variable "gke_pod_secondary_range_name" {
   type = string
-  default = ""
+  default = null
 }
 
 variable "gke_svc_secondary_range_name" {
   type = string
-  default = ""
+  default = null
 }
 
 variable "gke_master_auth_networks" {
@@ -69,17 +77,7 @@ variable "gke_node_pools" {
     labels = map(string)
     tags = list(string)
   }))
-  default = [
-    {
-      name = "mlisa-pool"
-      node_count = 1
-      machine_type = "n1-standard-16"
-      labels = {
-        application = "mlisa"
-      }
-      tags = []
-    }
-  ]
+  default = null
 }
 
 variable "gke_node_management" {
