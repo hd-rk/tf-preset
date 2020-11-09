@@ -7,7 +7,7 @@ locals {
     svc_secondary_range_name = var.gke_svc_secondary_range_name
     node_pools = var.gke_node_pools
   }
-  gke_merged_conf = merge(gke_preset_conf, gke_custom_conf)
+  gke_merged_conf = merge(local.gke_preset_conf, local.gke_custom_conf)
 }
 
 module "gke" {
