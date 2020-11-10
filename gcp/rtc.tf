@@ -1,5 +1,5 @@
 module "rtc" {
-  source = "git@github.com:hd-rk/tf.git//modules/rtc?ref=78fc0615750d0bd42d2d536eaa36fe2ab0e566fe"
+  source = "git@github.com:hd-rk/tf.git//modules/rtc?ref=450b5f3b1f79d48a8e7181533a28e750df9800cd"
 
   deployment_name = var.deployment_name
 }
