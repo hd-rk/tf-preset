@@ -8,7 +8,7 @@ locals {
 }
 
 module "gke" {
-  source = "git@github.com:hd-rk/tf.git//modules/gke?ref=69ba67a467ef8c09b3b61af43612eeab74a19626"
+  source = "git@github.com:hd-rk/tf.git//modules/gke?ref=b6cb5fbae0b80102b10336a42db5caaeea14ba13"
 
   deployment_name = var.deployment_name
   project = var.project
@@ -17,6 +17,7 @@ module "gke" {
   network = var.network
   subnet = var.subnet
   enable_monitoring = local.enable_monitoring
+  deployment_config_id = module.rtc.id
 
   regional = local.gke_regional
   private = var.gke_private
