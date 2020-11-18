@@ -10,7 +10,7 @@ locals {
 }
 
 module "dpc_druid" {
-  source = "git@github.com:hd-rk/tf.git//modules/dpc?ref=5515112104e948e747f76280193442a557d76ca2"
+  source = "git@github.com:hd-rk/tf.git//modules/dpc?ref=49e72cee41ded3ecd23a46281d3b0605176193cd"
 
   deployment_name = var.deployment_name
   project = var.project
@@ -29,4 +29,5 @@ module "dpc_druid" {
   worker_config = local.dpc_druid_conf["worker_config"]
   num_preemptible_workers = var.dpc_druid_num_preemptible_workers
   labels = var.dpc_druid_labels
+  ingress_source_cidr_ranges = [module.gke.cluster_pod_cidr]
 }
