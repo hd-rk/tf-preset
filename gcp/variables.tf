@@ -19,6 +19,14 @@ variable "enable_monitoring" {
   default = null
 }
 
+variable "logstash" {
+  type = object({
+    host = string
+    port = string
+  })
+  default = null
+}
+
 variable "gke_regional" {
   type = bool
   default = null
@@ -88,5 +96,58 @@ variable "gke_node_management" {
   default = {
     auto_repair = false
     auto_upgrade = false
+  }
+}
+
+variable "dpc_druid_image_version" {
+  type = string
+  default = "1.3.44-debian9"
+}
+
+variable "dpc_druid_properties" {
+  type = map(string)
+  default = null
+}
+
+variable "dpc_druid_init_actions" {
+  type = set(string)
+  default = null
+}
+
+variable "dpc_druid_master_config" {
+  type = object({
+    ha = bool
+    machine_type = string
+    disk_config = object({
+      boot_disk_type = string
+      boot_disk_size_gb = number
+      num_local_ssds = number
+    })
+  })
+  default = null
+}
+
+variable "dpc_druid_worker_config" {
+  type = object({
+    num_instances = number
+    machine_type = string
+    disk_config = object({
+      boot_disk_type = string
+      boot_disk_size_gb = number
+      num_local_ssds = number
+    })
+  })
+  default = null
+}
+
+variable "dpc_druid_num_preemptible_workers" {
+  type = number
+  default = 0
+}
+
+variable "dpc_druid_labels" {
+  type = map(string)
+  default = {
+    "application" = "druid"
   }
 }

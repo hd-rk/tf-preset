@@ -1,7 +1,6 @@
 locals {
-  dev_preset = {
-    enable_monitoring = false
-    gke = {
+  gke_presets = {
+    development = {
       regional = false
       max_pods_per_node = 110
       pod_secondary_range_name = ""
@@ -18,11 +17,7 @@ locals {
         }
       ]
     }
-  }
-
-  staging_preset = {
-    enable_monitoring = true
-    gke = {
+    staging = {
       regional = false
       max_pods_per_node = 32
       pod_secondary_range_name = "${var.subnet}-gke-pod"
@@ -66,10 +61,5 @@ locals {
         }
       ]
     }
-  }
-
-  preset_map = {
-    development = local.dev_preset
-    staging = local.staging_preset
   }
 }

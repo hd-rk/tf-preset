@@ -1,14 +1,23 @@
 locals {
-  gke_preset_conf = local.preset_map[var.preset]["gke"]
-  gke_regional = var.gke_regional != null ? var.gke_regional : local.gke_preset_conf["regional"]
-  gke_max_pods_per_node = var.gke_max_pods_per_node != null ? var.gke_max_pods_per_node : local.gke_preset_conf["max_pods_per_node"]
-  gke_pod_secondary_range_name = var.gke_pod_secondary_range_name != null ? var.gke_pod_secondary_range_name : local.gke_preset_conf["pod_secondary_range_name"]
-  gke_svc_secondary_range_name = var.gke_svc_secondary_range_name != null ? var.gke_svc_secondary_range_name : local.gke_preset_conf["svc_secondary_range_name"]
-  gke_node_pools = var.gke_node_pools != null ? var.gke_node_pools : local.gke_preset_conf["node_pools"]
+  gke_preset_conf = local.gke_presets[var.preset]
+  gke_custom_conf = {
+    regional = var.gke_regional
+    max_pods_per_node = var.gke_max_pods_per_node
+    pod_secondary_range_name = var.gke_pod_secondary_range_name
+    svc_secondary_range_name = var.gke_svc_secondary_range_name
+    node_pools = var.gke_node_pools
+  }
+  gke_conf = {for k,v in local.gke_preset_conf: k => local.gke_custom_conf[k] == null ? v : local.gke_custom_conf[k] }
+
+  # gke_regional = var.gke_regional != null ? var.gke_regional : local.gke_preset_conf["regional"]
+  # gke_max_pods_per_node = var.gke_max_pods_per_node != null ? var.gke_max_pods_per_node : local.gke_preset_conf["max_pods_per_node"]
+  # gke_pod_secondary_range_name = var.gke_pod_secondary_range_name != null ? var.gke_pod_secondary_range_name : local.gke_preset_conf["pod_secondary_range_name"]
+  # gke_svc_secondary_range_name = var.gke_svc_secondary_range_name != null ? var.gke_svc_secondary_range_name : local.gke_preset_conf["svc_secondary_range_name"]
+  # gke_node_pools = var.gke_node_pools != null ? var.gke_node_pools : local.gke_preset_conf["node_pools"]
 }
 
 module "gke" {
-  source = "git@github.com:hd-rk/tf.git//modules/gke?ref=450b5f3b1f79d48a8e7181533a28e750df9800cd"
+  source = "git@github.com:hd-rk/tf.git//modules/gke?ref=5515112104e948e747f76280193442a557d76ca2"
 
   deployment_name = var.deployment_name
   project = var.project
@@ -19,12 +28,12 @@ module "gke" {
   enable_monitoring = local.enable_monitoring
   deployment_config_name = module.rtc.name
 
-  regional = local.gke_regional
+  regional = local.gke_conf["regional"]
   private = var.gke_private
-  max_pods_per_node = local.gke_max_pods_per_node
-  pod_secondary_range_name = local.gke_pod_secondary_range_name
-  svc_secondary_range_name = local.gke_svc_secondary_range_name
-  node_pools = local.gke_node_pools
+  max_pods_per_node = local.gke_conf["max_pods_per_node"]
+  pod_secondary_range_name = local.gke_conf["pod_secondary_range_name"]
+  svc_secondary_range_name = local.gke_conf["svc_secondary_range_name"]
+  node_pools = local.gke_conf["node_pools"]
   master_auth_networks = var.gke_master_auth_networks
   oauth_scopes = var.gke_oauth_scopes
   node_management = var.gke_node_management
